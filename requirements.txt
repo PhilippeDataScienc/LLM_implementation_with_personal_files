@@ -3,3 +3,4 @@ qdrant_client
 pypdf
 transformers
 torch
+llama-index-embeddings-huggingface
