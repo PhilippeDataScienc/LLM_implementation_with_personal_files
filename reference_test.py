@@ -1,6 +1,6 @@
-from llama_index.llms import Ollama
+from llama_index.llms.ollama import Ollama
 
-llm = Ollama(model="mixtral")
+llm = Ollama(model="mixtral", request_timeout=600.0)
 
 prompt = (
   "Crée une classe de contrôleur REST en Java pour une application Spring Boot 3.2. "
