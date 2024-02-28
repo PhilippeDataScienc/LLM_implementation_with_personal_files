@@ -1,7 +1,7 @@
 import qdrant_client
 from llama_index.core import VectorStoreIndex, ServiceContext, SimpleDirectoryReader
 from llama_index.llms.ollama import Ollama
-from llama_index.core import StorageContext
+from llama_index.core import StorageContext, Settings
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 
 
@@ -56,13 +56,10 @@ def get_index_from_already_generated_local_vector_store(vector: str) -> VectorSt
     Returns:
         VectorStoreIndex: The generated VectorStoreIndex.
     """
-
-    llm = Ollama(model="mixtral", request_timeout=600.0)
-    service_context = ServiceContext.from_defaults(llm=llm, embed_model="local")
+    Settings.llm = Ollama(model="mixtral", request_timeout=600.0)
     client = qdrant_client.QdrantClient(path="./qdrant_data")
     vector_store = QdrantVectorStore(client=client, collection_name=vector)
-    index = VectorStoreIndex.from_vector_store(embed_model="local", vector_store=vector_store,
-                                               service_context=service_context)
+    index = VectorStoreIndex.from_vector_store(embed_model="local", vector_store=vector_store)
     return index
 
 
