@@ -28,14 +28,12 @@ def generate_index_from_local_pdf_files() -> VectorStoreIndex:
     vector_store = QdrantVectorStore(client=client, collection_name="test2")
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-    # Initializing the Large Language Model (LLM) with Ollama
-    # The request_timeout may need to be adjusted depending on the system's performance capabilities
-    llm = Ollama(model="mixtral", request_timeout=600.0)
-    service_context = ServiceContext.from_defaults(llm=llm, embed_model="local")
+    Settings.llm = Ollama(model="mixtral", request_timeout=600.0)
+
     # Creating the index, which includes embedding the documents into the vector store
     index = VectorStoreIndex.from_documents(documents,
+                                            embed_model="local",
                                             show_progress=True,
-                                            service_context=service_context,
                                             storage_context=storage_context)
     return index
 
